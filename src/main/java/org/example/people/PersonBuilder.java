@@ -1,5 +1,6 @@
 package org.example.people;
 
+import java.lang.reflect.Field;
 import java.util.StringJoiner;
 
 public class PersonBuilder {
@@ -34,11 +35,16 @@ public class PersonBuilder {
 
     public Person build() {
         StringJoiner sj = new StringJoiner(", ", "(", ")");
-
-        if (name == null) sj.add("Имя: name = null");
-        if (surname == null) sj.add("Фамилия: surname = null");
-        if (age == null) sj.add("Возраст: age = null");
-        if (address == null) sj.add("Адрес: address = null");
+        try {
+            for (Field field : this.getClass().getDeclaredFields()) {
+                var value = field.get(this);
+                if (value == null) {
+                    sj.add(field.getName() + " = null");
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
         if (name == null || surname == null || age == null || address == null) {
             throw new IllegalStateException("Не могу создать объект Person, не заполнены поля: " + sj);
