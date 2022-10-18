@@ -13,15 +13,12 @@ public class Person {
     }
 
     public Person(String name, String surname, int age) {
-        this.name = name;
-        this.surname = surname;
+        this(name, surname);
         this.age = setAge(age);
     }
 
     public Person(String name, String surname, int age, String address) {
-        this.name = name;
-        this.surname = surname;
-        this.age = setAge(age);
+        this(name, surname, age);
         this.address = address;
     }
 
