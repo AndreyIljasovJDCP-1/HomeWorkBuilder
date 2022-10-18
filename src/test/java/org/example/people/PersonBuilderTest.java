@@ -9,7 +9,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 class PersonBuilderTest {
 
     @Order(1)
-    @ParameterizedTest(name = "Добавить в PersonBuilder корректный возраст {0}")
+    @DisplayName("Тест: age() добавить корректный возраст в PersonBuilder.")
+    @ParameterizedTest(name = "Возраст: {0}")
     @ValueSource(ints = {0, 1, 124, 100})
     void ageAddAgeToPersonBuilderIfAgeRight(int age) {
         PersonBuilder personBuilder = new PersonBuilder().age(age);
@@ -17,7 +18,8 @@ class PersonBuilderTest {
     }
 
     @Order(2)
-    @ParameterizedTest(name = "Throw IllegalArgumentException, если недопустимый возраст {0}")
+    @DisplayName("Тест: age() throws IllegalArgumentException, ")
+    @ParameterizedTest(name = "если возраст некорректный: {0}")
     @ValueSource(ints = {-1, 125, -125, 200})
     void ageThrowExceptionIfAgeWrong(int age) {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new PersonBuilder().age(age));
@@ -25,7 +27,7 @@ class PersonBuilderTest {
 
     @Test
     @Order(3)
-    @DisplayName("Проверка создания объекта Person.")
+    @DisplayName("Тест: build() создание объекта Person.")
     void buildReturnNewPerson() {
         Person person = new PersonBuilder()
                 .name("Иван")
@@ -44,7 +46,7 @@ class PersonBuilderTest {
 
     @Test
     @Order(4)
-    @DisplayName("Throw IllegalStateException, если заданы не все поля.")
+    @DisplayName("Тест: build() throws IllegalStateException, если заданы не все поля.")
     void buildThrowIllegalStateExceptionIfNotAllFields() {
 
         Assertions.assertAll("Throw IllegalStateException",

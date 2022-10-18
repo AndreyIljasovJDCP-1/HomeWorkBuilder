@@ -11,7 +11,7 @@ class PersonTest {
 
     @Test
     @Order(1)
-    @DisplayName("True, если установлен корректный возраст.")
+    @DisplayName("Тест: hasAge() return true, если установлен корректный возраст.")
     void hasAgeReturnTrueIfAgeRightSetUp() {
         person = new Person("Иван", "Иванов", 30);
         Assertions.assertTrue(person.hasAge());
@@ -19,22 +19,40 @@ class PersonTest {
 
     @Test
     @Order(2)
-    @DisplayName("False, если возраст не задан (=-1).")
+    @DisplayName("Тест: hasAge() return false, если возраст не задан (=-1).")
     void hasAgeReturnFalseIfAgeNotSetUp() {
         person = new Person("Иван", "Иванов");
         Assertions.assertFalse(person.hasAge());
     }
 
+    @Test
     @Order(3)
-    @ParameterizedTest(name = "Установить корректный возраст {0}")
+    @DisplayName("Тест: hasAddress() return true, если адрес установлен.")
+    void hasAddressReturnTrue() {
+        person = new Person("Иван", "Иванов", 30, "Москва");
+        Assertions.assertTrue(person.hasAddress());
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Тест:  hasAddress() return false, если адрес не установлен (= null).")
+    void hasAddressReturnFalse() {
+        person = new Person("Иван", "Иванов", 30);
+        Assertions.assertFalse(person.hasAddress());
+    }
+
+    @Order(5)
+    @DisplayName("Тест: setAge() установка корректного возраста.")
+    @ParameterizedTest(name = "Возраст: {0}")
     @ValueSource(ints = {0, 1, 124, 100})
     void setAgeReturnAge(int age) {
         person = new Person("Иван", "Иванов");
         Assertions.assertEquals(age, person.setAge(age));
     }
 
-    @Order(4)
-    @ParameterizedTest(name = "Throw IllegalArgumentException, для недопустимого возраста {0}")
+    @Order(6)
+    @DisplayName("Тест: setAge() throws IllegalArgumentException,")
+    @ParameterizedTest(name = "если возраст: {0}")
     @ValueSource(ints = {-1, 125, -125, 200})
     void setAgeThrowExceptionIfAgeWrong(int age) {
         person = new Person("Иван", "Иванов");
@@ -42,8 +60,9 @@ class PersonTest {
                 () -> person.setAge(age));
     }
 
-    @Order(5)
-    @ParameterizedTest(name = "Throw IllegalArgumentException, для недопустимого возраста {0} в конструкторе")
+    @Order(7)
+    @DisplayName("Тест: Конструктор throws IllegalArgumentException, ")
+    @ParameterizedTest(name = "если возраст: {0}")
     @ValueSource(ints = {-1, 125, -125, 200})
     void constructorThrowExceptionIfAgeWrong(int age) {
         Assertions.assertThrows(IllegalArgumentException.class,
@@ -51,8 +70,8 @@ class PersonTest {
     }
 
     @Test
-    @Order(6)
-    @DisplayName("Увеличить возраст на 1, если установлен корректный возраст.")
+    @Order(8)
+    @DisplayName("Тест: happyBirthday() увеличить возраст на 1, если возраст установлен.")
     void happyBirthdayPersonHasAgeReturnIncreasedAge() {
         person = new Person("Иван", "Иванов", 30);
         person.happyBirthday();
@@ -60,8 +79,8 @@ class PersonTest {
     }
 
     @Test
-    @Order(7)
-    @DisplayName("Не изменять возраст, если возраст не установлен (=-1).")
+    @Order(9)
+    @DisplayName("Тест: happyBirthday() не изменять возраст, если возраст не установлен (=-1).")
     void happyBirthdayUnknownAgeDoNothing() {
         person = new Person("Иван", "Иванов");
         person.happyBirthday();
@@ -69,24 +88,8 @@ class PersonTest {
     }
 
     @Test
-    @Order(8)
-    @DisplayName("True, если задан адрес.")
-    void hasAddressReturnTrue() {
-        person = new Person("Иван", "Иванов", 30, "Москва");
-        Assertions.assertTrue(person.hasAddress());
-    }
-
-    @Test
-    @Order(9)
-    @DisplayName("False, если адрес не установлен (= null).")
-    void hasAddressReturnFalse() {
-        person = new Person("Иван", "Иванов", 30);
-        Assertions.assertFalse(person.hasAddress());
-    }
-
-    @Test
     @Order(10)
-    @DisplayName("Вернуть PersonBuilder с родительскими полями \"surname\" и \"address\".")
+    @DisplayName("Тест: newChildBuilder() return PersonBuilder с родительскими полями \"surname\" и \"address\".")
     void newChildBuilderReturnPersonBuilderWithParentsFieldsSurnameAddress() {
         person = new Person("Иван", "Иванов", 30, "Москва");
         PersonBuilder personBuilder = person.newChildBuilder(10);
